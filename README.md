@@ -181,26 +181,27 @@ git push origin main
 ### **Step 1: Setup Supabase (Database)**
 
 1. Go to [supabase.com](https://supabase.com) → Create free project
-2. Go to SQL Editor → Create tables:
+2. Go to **SQL Editor** → Run this to create tables with proper permissions:
 
 ```sql
 -- requests table
 CREATE TABLE requests (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  email TEXT,
   event_type TEXT NOT NULL,
   event_date TEXT NOT NULL,
-  venue TEXT NOT NULL,
-  guest_count INT NOT NULL,
+  venue TEXT,
+  guests INT NOT NULL,
   meal_type TEXT,
-  menu_items JSONB NOT NULL,
-  client_name TEXT NOT NULL,
-  client_phone TEXT NOT NULL,
-  client_email TEXT,
-  special_notes TEXT,
-  created_at TIMESTAMP DEFAULT now(),
-  quoted BOOLEAN DEFAULT FALSE,
-  quote_amount DECIMAL,
-  per_plate_price DECIMAL
+  menu JSONB,
+  notes TEXT,
+  preferred_time TEXT,
+  status TEXT DEFAULT 'new',
+  per_plate DECIMAL,
+  total_cost DECIMAL,
+  submitted_at TIMESTAMP DEFAULT now()
 );
 
 -- callbacks table
@@ -212,6 +213,29 @@ CREATE TABLE callbacks (
   message TEXT,
   created_at TIMESTAMP DEFAULT now()
 );
+
+-- Enable Row-Level Security
+ALTER TABLE requests ENABLE ROW LEVEL SECURITY;
+ALTER TABLE callbacks ENABLE ROW LEVEL SECURITY;
+
+-- Allow public (unauthenticated) INSERT on requests
+CREATE POLICY "Allow public insert on requests" ON requests
+  FOR INSERT WITH CHECK (true);
+
+-- Allow public (unauthenticated) INSERT on callbacks
+CREATE POLICY "Allow public insert on callbacks" ON callbacks
+  FOR INSERT WITH CHECK (true);
+
+-- Allow authenticated owner to SELECT and UPDATE requests
+CREATE POLICY "Owner can view and update requests" ON requests
+  FOR SELECT USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Owner can update requests" ON requests
+  FOR UPDATE USING (auth.role() = 'authenticated');
+
+-- Allow authenticated owner to SELECT callbacks
+CREATE POLICY "Owner can view callbacks" ON callbacks
+  FOR SELECT USING (auth.role() = 'authenticated');
 ```
 
 3. Copy your credentials:

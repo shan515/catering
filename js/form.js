@@ -322,7 +322,7 @@ async function submitCallback() {
   const payload = {
     name,
     phone,
-    time: getEl('cbTime').value,
+    preferred_time: getEl('cbTime').value || null,
     message: getEl('cbMessage').value.trim() || null
   };
   

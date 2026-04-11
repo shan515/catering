@@ -108,7 +108,7 @@ async function renderDash(filter) {
       const callbacksHtml = callbacks.map(cb => `
         <div style="background:white;border-radius:16px;padding:1.2rem 1.5rem;margin-bottom:.8rem;box-shadow:0 2px 8px rgba(122,21,21,.06);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;border-left:4px solid var(--turmeric);">
           <div><strong style="color:var(--maroon-deep)">${cb.name}</strong> <span style="color:var(--saffron);font-weight:700;margin-left:.5rem">${cb.phone}</span></div>
-          <div style="font-size:.85rem;color:var(--text-mid)">${cb.time || ''} ${cb.message ? '· "' + cb.message + '"' : ''}</div>
+          <div style="font-size:.85rem;color:var(--text-mid)">${cb.preferred_time || ''} ${cb.message ? '· "' + cb.message + '"' : ''}</div>
           <div style="font-size:.75rem;color:#bbb">${new Date(cb.created_at).toLocaleString('en-IN')}</div>
         </div>`).join('');
       
