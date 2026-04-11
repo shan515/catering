@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="data:,">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Annapurna Catering – Owner Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Tiro+Devanagari+Marathi&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<link rel="stylesheet" href="styles.css">
+<script src="js/config.js"></script>
+<script src="js/ui-utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/notify.js"></script>
+<style>
+  body { background: var(--cream); }
+  .admin-nav { 
+    background: var(--maroon-deep); 
+    padding: 1rem 2rem; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  .admin-nav h1 { 
+    font-family: 'Playfair Display', serif; 
+    color: var(--turmeric); 
+    font-size: 1.5rem;
+    margin: 0;
+  }
+  .admin-nav a {
+    color: var(--cream);
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.2s;
+  }
+  .admin-nav a:hover { color: var(--turmeric); }
+  .admin-container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+</style>
+</head>
+
+<body>
+
+<div class="admin-nav">
+  <h1>🍛 Annapurna Admin</h1>
+  <a href="annapurna_catering.html">← Back to Website</a>
+</div>
+
+<section id="dashboard">
+  <div class="admin-container">
+    <div class="dash-login" id="dashLogin">
+      <div style="font-size:3rem;margin-bottom:1rem">👨‍🍳</div>
+      <h3>Owner Login</h3>
+      <p>Sign in securely to view requests and send quotes</p>
+      <div class="dash-login-err" id="loginErr"></div>
+      <div class="input-group" style="text-align:left;margin-top:1rem">
+        <label>Email</label>
+        <input type="email" id="ownerEmail" placeholder="your@email.com" onkeydown="if(event.key==='Enter')ownerLogin()"/>
+      </div>
+      <div class="input-group" style="text-align:left">
+        <label>Password</label>
+        <input type="password" id="ownerPass" placeholder="Your password" onkeydown="if(event.key==='Enter')ownerLogin()"/>
+      </div>
+      <button class="btn-primary" style="width:100%;justify-content:center;margin-top:.5rem;" id="loginBtn" onclick="ownerLogin()">Login →</button>
+      <p style="font-size:.78rem;color:#bbb;margin-top:1rem;">🔒 Secured by Supabase Auth</p>
+    </div>
+
+    <div class="dash-panel" id="dashPanel">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:1rem;">
+        <h2 style="font-family:'Playfair Display',serif;color:var(--maroon-deep);">Welcome, Annapurna 🙏</h2>
+        <div style="display:flex;gap:.8rem;flex-wrap:wrap;">
+          <button onclick="filterRequests('all')" class="filter-btn" id="fb-all" style="padding:.5rem 1rem;border-radius:50px;background:var(--saffron);color:white;border:2px solid var(--saffron);font-weight:700;cursor:pointer;font-size:.85rem;font-family:'Nunito',sans-serif;">All</button>
+          <button onclick="filterRequests('new')" class="filter-btn" id="fb-new" style="padding:.5rem 1rem;border-radius:50px;background:white;color:var(--text-dark);border:2px solid #ddd;font-weight:700;cursor:pointer;font-size:.85rem;font-family:'Nunito',sans-serif;">New</button>
+          <button onclick="filterRequests('quoted')" class="filter-btn" id="fb-quoted" style="padding:.5rem 1rem;border-radius:50px;background:white;color:var(--text-dark);border:2px solid #ddd;font-weight:700;cursor:pointer;font-size:.85rem;font-family:'Nunito',sans-serif;">Quoted</button>
+          <button onclick="ownerLogout()" style="padding:.5rem 1rem;border-radius:50px;border:2px solid var(--maroon);background:transparent;color:var(--maroon);font-weight:700;cursor:pointer;font-size:.85rem;font-family:'Nunito',sans-serif;">Logout</button>
+        </div>
+      </div>
+      <div class="dash-stats" id="dashStats"></div>
+      <div id="requestsList"></div>
+      <div id="callbacksList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- NOTIFY MODAL -->
+<div class="modal-overlay" id="notifyModal" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-head"><h3>📤 Send Quote to Client</h3><button class="modal-close" onclick="closeModal('notifyModal')">✕</button></div>
+    <div class="modal-body">
+      <div class="quote-summary-pill" id="modalSummary"></div>
+      <div class="notify-section">
+        <div class="notify-section-title">💬 WhatsApp (Recommended for India)</div>
+        <button class="notify-btn btn-whatsapp" onclick="sendWhatsApp()">
+          <span class="nb-icon">💬</span>
+          <span class="nb-text">Open WhatsApp with Quote Message<small>Opens WhatsApp pre-filled — one tap to send</small></span>
+        </button>
+      </div>
+      <div class="notify-section">
+        <div class="notify-section-title">✉️ Email (via EmailJS – Free)</div>
+        <button class="notify-btn btn-email" onclick="sendEmail()" id="emailBtn">
+          <span class="nb-icon">✉️</span>
+          <span class="nb-text">Send Email to Client<small id="emailBtnSub">Sends a beautiful quote email automatically</small></span>
+        </button>
+        <div class="emailjs-setup-note" id="ejsNote">⚙️ Setup required: Save your EmailJS keys above to enable this.</div>
+      </div>
+      <div class="notify-section">
+        <div class="notify-section-title">📋 Copy Message</div>
+        <button class="notify-btn btn-copy-sms" onclick="copySmsText()">
+          <span class="nb-icon">📋</span>
+          <span class="nb-text">Copy Quote to Clipboard<small>Paste into any SMS / WhatsApp manually</small></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
