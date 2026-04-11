@@ -181,11 +181,13 @@ git push origin main
 ### **Step 1: Setup Supabase (Database)**
 
 1. Go to [supabase.com](https://supabase.com) → Create free project
-2. Go to **SQL Editor** → Run this to create tables with proper permissions:
+2. Go to **SQL Editor** → **Copy and paste the entire script below** → Click Run:
 
 ```sql
--- requests table
-CREATE TABLE requests (
+-- ═══════════════════════════════════════════════════════
+-- REQUESTS TABLE
+-- ═══════════════════════════════════════════════════════
+CREATE TABLE IF NOT EXISTS requests (
   id TEXT PRIMARY KEY,
   name TEXT NOT NULL,
   phone TEXT NOT NULL,
@@ -204,8 +206,31 @@ CREATE TABLE requests (
   submitted_at TIMESTAMP DEFAULT now()
 );
 
--- callbacks table
-CREATE TABLE callbacks (
+-- Enable RLS on requests
+ALTER TABLE requests ENABLE ROW LEVEL SECURITY;
+
+-- Policy 1: Public users can INSERT requests
+CREATE POLICY "public_insert_requests" ON requests
+  FOR INSERT WITH CHECK (true);
+
+-- Policy 2: Authenticated owner can SELECT all requests
+CREATE POLICY "auth_select_requests" ON requests
+  FOR SELECT USING (
+    auth.role() = 'authenticated'
+  );
+
+-- Policy 3: Authenticated owner can UPDATE requests
+CREATE POLICY "auth_update_requests" ON requests
+  FOR UPDATE USING (
+    auth.role() = 'authenticated'
+  ) WITH CHECK (
+    auth.role() = 'authenticated'
+  );
+
+-- ═══════════════════════════════════════════════════════
+-- CALLBACKS TABLE
+-- ═══════════════════════════════════════════════════════
+CREATE TABLE IF NOT EXISTS callbacks (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   name TEXT NOT NULL,
   phone TEXT NOT NULL,
@@ -214,28 +239,18 @@ CREATE TABLE callbacks (
   created_at TIMESTAMP DEFAULT now()
 );
 
--- Enable Row-Level Security
-ALTER TABLE requests ENABLE ROW LEVEL SECURITY;
+-- Enable RLS on callbacks
 ALTER TABLE callbacks ENABLE ROW LEVEL SECURITY;
 
--- Allow public (unauthenticated) INSERT on requests
-CREATE POLICY "Allow public insert on requests" ON requests
+-- Policy 1: Public users can INSERT callbacks
+CREATE POLICY "public_insert_callbacks" ON callbacks
   FOR INSERT WITH CHECK (true);
 
--- Allow public (unauthenticated) INSERT on callbacks
-CREATE POLICY "Allow public insert on callbacks" ON callbacks
-  FOR INSERT WITH CHECK (true);
-
--- Allow authenticated owner to SELECT and UPDATE requests
-CREATE POLICY "Owner can view and update requests" ON requests
-  FOR SELECT USING (auth.role() = 'authenticated');
-
-CREATE POLICY "Owner can update requests" ON requests
-  FOR UPDATE USING (auth.role() = 'authenticated');
-
--- Allow authenticated owner to SELECT callbacks
-CREATE POLICY "Owner can view callbacks" ON callbacks
-  FOR SELECT USING (auth.role() = 'authenticated');
+-- Policy 2: Authenticated owner can SELECT all callbacks
+CREATE POLICY "auth_select_callbacks" ON callbacks
+  FOR SELECT USING (
+    auth.role() = 'authenticated'
+  );
 ```
 
 3. Copy your credentials:
