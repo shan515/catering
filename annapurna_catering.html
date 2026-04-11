@@ -11,9 +11,7 @@
 <link rel="stylesheet" href="styles.css">
 <script src="js/config.js"></script>
 <script src="js/ui-utils.js"></script>
-<script src="js/auth.js"></script>
 <script src="js/form.js"></script>
-<script src="js/dashboard.js"></script>
 <script src="js/notify.js"></script>
 </head>
 
@@ -234,54 +232,14 @@
   </div>
 </section>
 
-<!-- OWNER DASHBOARD -->
-<section id="dashboard">
-  <div class="section-header">
-    <div class="section-tag">🔐 Owner Area</div>
-    <h2 class="section-title">Owner <em>Dashboard</em></h2>
-    <div class="divider"></div>
-  </div>
-
-  <div class="dash-login" id="dashLogin">
-    <div style="font-size:3rem;margin-bottom:1rem">👨‍🍳</div>
-    <h3>Owner Login</h3>
-    <p>Sign in securely to view requests and send quotes</p>
-    <div class="dash-login-err" id="loginErr"></div>
-    <div class="input-group" style="text-align:left;margin-top:1rem">
-      <label>Email</label>
-      <input type="email" id="ownerEmail" placeholder="your@email.com" onkeydown="if(event.key==='Enter')ownerLogin()"/>
-    </div>
-    <div class="input-group" style="text-align:left">
-      <label>Password</label>
-      <input type="password" id="ownerPass" placeholder="Your password" onkeydown="if(event.key==='Enter')ownerLogin()"/>
-    </div>
-    <button class="btn-primary" style="width:100%;justify-content:center;margin-top:.5rem;" id="loginBtn" onclick="ownerLogin()">Login →</button>
-    <p style="font-size:.78rem;color:#bbb;margin-top:1rem;">🔒 Secured by Supabase Auth</p>
-  </div>
-
-  <div class="dash-panel" id="dashPanel">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:1rem;">
-      <h2 style="font-family:'Playfair Display',serif;color:var(--maroon-deep);">Welcome, Annapurna 🙏</h2>
-      <div style="display:flex;gap:.8rem;flex-wrap:wrap;">
-        <button onclick="filterRequests('all')" class="filter-btn" id="fb-all" style="padding:.5rem 1rem;border-radius:50px;background:var(--saffron);color:white;border:2px solid var(--saffron);font-weight:700;cursor:pointer;font-size:.85rem;font-family:'Nunito',sans-serif;">All</button>
-        <button onclick="filterRequests('new')" class="filter-btn" id="fb-new" style="padding:.5rem 1rem;border-radius:50px;background:white;color:var(--text-dark);border:2px solid #ddd;font-weight:700;cursor:pointer;font-size:.85rem;font-family:'Nunito',sans-serif;">New</button>
-        <button onclick="filterRequests('quoted')" class="filter-btn" id="fb-quoted" style="padding:.5rem 1rem;border-radius:50px;background:white;color:var(--text-dark);border:2px solid #ddd;font-weight:700;cursor:pointer;font-size:.85rem;font-family:'Nunito',sans-serif;">Quoted</button>
-        <button onclick="ownerLogout()" style="padding:.5rem 1rem;border-radius:50px;border:2px solid var(--maroon);background:transparent;color:var(--maroon);font-weight:700;cursor:pointer;font-size:.85rem;font-family:'Nunito',sans-serif;">Logout</button>
-      </div>
-    </div>
-    <div class="dash-stats" id="dashStats"></div>
-
-    <div id="requestsList"></div>
-    <div id="callbacksList"></div>
-  </div>
-</section>
-
 <!-- FOOTER -->
 <footer>
   <div class="footer-marathi">अन्नपूर्णा केटरिंग</div>
   <p>© 2025 <strong>Annapurna Catering</strong> · Pune, Maharashtra · Made with ❤️ and lots of तूप</p>
   <p style="margin-top:.4rem;font-size:.78rem;">Crafting authentic Maharashtrian flavours </p>
-  <!-- <button onclick="document.getElementById('hostingModal').style.display='flex'" style="margin-top:1rem;background:rgba(245,184,0,.15);border:1px solid rgba(245,184,0,.4);color:var(--turmeric);padding:.5rem 1.2rem;border-radius:50px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;">🌐 How to Host This Website Free</button> -->
+  <p style="font-size:.7rem;color:#999;margin-top:.8rem;">
+    <a href="admin.html" style="color:#999;text-decoration:none;font-weight:700;">🔐 Admin</a>
+  </p>
 </footer>
 
 <!-- ── NOTIFY MODAL ── -->
