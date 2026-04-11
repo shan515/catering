@@ -670,15 +670,6 @@ MIT License - See LICENSE file for details
 
 ---
 
-## 📞 Support
-
-For issues, feature requests, or questions:
-- Open a GitHub issue
-- Email: annapurna@catering.in
-- WhatsApp: +91 98765 43210
-
----
-
 ## 🚀 Deployment Checklist
 
 - [ ] Create Supabase project & tables
