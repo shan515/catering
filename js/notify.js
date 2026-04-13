@@ -148,6 +148,29 @@ function getEmailJSConfig() {
 }
 
 /**
+ * Initialize EmailJS with public key
+ */
+function initEmailJS() {
+  try {
+    const cfg = getEmailJSConfig();
+    if (cfg.publicKey) {
+      emailjs.init(cfg.publicKey);
+    }
+  } catch (e) {
+    console.error('EmailJS init error:', e);
+  }
+}
+
+// Initialize EmailJS on page load
+window.addEventListener('load', () => {
+  try {
+    initEmailJS();
+  } catch (e) {
+    console.error('EmailJS init error:', e);
+  }
+});
+
+/**
  * Build email payload for EmailJS template
  * @param {Object} req - Request object
  * @returns {Object} Template parameters
@@ -192,6 +215,13 @@ async function sendEmail() {
     return showToast('⚠️ Save EmailJS settings first');
   }
   
+  // Ensure EmailJS is initialized
+  try {
+    initEmailJS();
+  } catch (e) {
+    return showToast('⚠️ EmailJS initialization failed');
+  }
+  
   const btn = getEl('emailBtn');
   btn.innerHTML = '<span class="nb-icon"><span class="spinner"></span></span><span class="nb-text">Sending…</span>';
   btn.disabled = true;
@@ -204,8 +234,9 @@ async function sendEmail() {
     btn.innerHTML = `<span class="nb-icon">✅</span><span class="nb-text">Email Sent!<small>Delivered to ${activeReq.email}</small></span>`;
     showToast('✅ Email sent to ' + activeReq.email, true);
   } catch (e) {
-    btn.innerHTML = '<span class="nb-icon">✉️</span><span class="nb-text">Send Email<small>Failed: ' + (e.text || 'Check settings') + '</small></span>';
+    btn.innerHTML = '<span class="nb-icon">✉️</span><span class="nb-text">Send Email<small>Failed: ' + (e.text || e.message || 'Unknown error') + '</small></span>';
     btn.disabled = false;
-    showToast('⚠️ Email failed: ' + (e.text || 'Check EmailJS settings'));
+    showToast('⚠️ Email failed: ' + (e.text || e.message || 'Check EmailJS settings'));
+    console.error('EmailJS send error:', e);
   }
 }
