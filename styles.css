@@ -265,3 +265,118 @@ footer strong{color:var(--turmeric)}
 .page-loading h2{font-family:'Playfair Display',serif;color:var(--turmeric);font-size:1.8rem}
 .page-loading p{color:rgba(255,255,255,.6);font-size:.9rem}
 .page-loading .big-spinner{width:48px;height:48px;border:4px solid rgba(245,184,0,.2);border-top-color:var(--turmeric);border-radius:50%;animation:spin .8s linear infinite}
+
+/* ═══════════════════════════════════════════════════════════
+   ── TIFFIN SERVICE STYLES ──
+   ═══════════════════════════════════════════════════════════ */
+
+/* TIFFIN HERO */
+.tiffin-hero{background:linear-gradient(160deg,#2D6A2D 0%,#1a4a1a 40%,#0d2d0d 100%);position:relative;overflow:hidden}
+.tiffin-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 20%,rgba(76,175,80,.08) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(45,106,45,.1) 0%,transparent 50%)}
+
+/* MENU SECTIONS */
+.tiffin-menu-section{background:var(--white)}
+.menu-week-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;max-width:900px;margin:0 auto;margin-top:2rem}
+.menu-day-card{background:var(--cream);border:2px solid rgba(232,97,10,.15);border-radius:16px;padding:1rem;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.menu-day-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.08)}
+.menu-day-header{font-weight:800;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--maroon-deep);background:rgba(232,97,10,.08);padding:.5rem;margin:-.5rem -.5rem .7rem;border-radius:0 0 8px 0}
+.menu-day-items{font-size:.78rem;line-height:1.6;color:var(--text-mid)}
+.menu-day-items div{margin:.3rem 0}
+.menu-addon-note{background:rgba(45,106,45,.08);border-left:4px solid var(--green);padding:1rem 1.2rem;border-radius:0 8px 8px 0;font-size:.85rem;color:var(--text-mid);max-width:900px;margin:2rem auto 0;line-height:1.6}
+
+/* PRICING SECTION */
+.tiffin-pricing-section{background:linear-gradient(135deg,var(--cream) 0%,#FFF0E0 100%)}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:2rem;max-width:900px;margin:0 auto;margin-top:2rem}
+.pricing-card{background:var(--white);border:2px solid rgba(232,97,10,.15);border-radius:20px;padding:2rem 1.5rem;text-align:center;transition:transform .25s,box-shadow .25s,border-color .25s;position:relative}
+.pricing-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(232,97,10,.2);border-color:var(--saffron)}
+.pricing-card.pricing-popular{;border: 3px solid var(--saffron);transform:scale(1.05)}
+.pricing-card.pricing-popular:hover{transform:translateY(-4px) scale(1.05)}
+.pricing-badge{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--maroon-deep);font-weight:700;margin-bottom:.3rem}
+.pricing-period{font-size:.8rem;color:#999;text-transform:uppercase;letter-spacing:.04em}
+.pricing-description{font-size:.85rem;color:var(--text-mid);margin:.8rem 0}
+.pricing-amount{margin:1.5rem 0}
+.price-currency{font-size:.9rem;color:var(--saffron);font-weight:700}
+.price-value{font-family:'Playfair Display',serif;font-size:2.2rem;color:var(--maroon-deep);font-weight:700}
+.price-period{font-size:.85rem;color:var(--text-mid)}
+.pricing-subtext{font-size:.78rem;color:#999;margin-top:.3rem}
+.pricing-features{font-size:.78rem;color:var(--text-mid);margin-top:1rem;text-align:left}
+.pricing-features div{margin:.4rem 0}
+
+/* FEATURES GRID */
+.tiffin-features{background:var(--white)}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2rem;max-width:900px;margin:0 auto;margin-top:2rem}
+.feature-card{background:var(--cream);border:1px solid rgba(232,97,10,.15);border-radius:16px;padding:1.5rem;text-align:center;transition:transform .2s,box-shadow .2s}
+.feature-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.feature-icon{font-size:2.5rem;margin-bottom:1rem}
+.feature-card h4{font-family:'Playfair Display',serif;color:var(--maroon-deep);margin-bottom:.5rem}
+.feature-card p{font-size:.85rem;color:var(--text-mid);line-height:1.6}
+
+/* FAQ SECTION */
+.tiffin-faq{background:linear-gradient(135deg,var(--cream) 0%,#FFF0E0 100%)}
+.faq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;max-width:900px;margin:0 auto;margin-top:2rem}
+.faq-card{background:var(--white);border:2px solid rgba(232,97,10,.15);border-radius:16px;padding:1.5rem;transition:transform .2s,box-shadow .2s}
+.faq-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.08)}
+.faq-card h4{font-size:.95rem;color:var(--maroon-deep);margin-bottom:.7rem}
+.faq-card p{font-size:.85rem;color:var(--text-mid);line-height:1.6}
+
+/* CTA SECTION */
+.tiffin-cta{background:linear-gradient(135deg,var(--green),var(--green-light));text-align:center;padding:4rem 2rem;color:white}
+.tiffin-cta h2{font-family:'Playfair Display',serif;font-size:2rem;margin-bottom:.5rem}
+.tiffin-cta p{font-size:1.1rem;color:rgba(255,255,255,.85);margin-bottom:2rem}
+.btn-large{padding:1rem 3rem;font-size:1.05rem}
+
+/* AUTH TABS & MODALS */
+.auth-tab-buttons{display:flex;gap:.5rem;margin-bottom:1.5rem;border-bottom:2px solid #E8D5C0;padding-bottom:1rem}
+.auth-tab-btn{background:none;border:none;padding:.6rem 1rem;color:var(--text-mid);font-weight:700;font-size:.9rem;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;font-family:'Nunito',sans-serif}
+.auth-tab-btn:hover{color:var(--saffron)}
+.auth-tab-btn.active{color:var(--saffron);border-bottom-color:var(--saffron)}
+.auth-tab{display:none}
+.auth-tab.active{display:block;animation:fadeUp .3s ease}
+.auth-error{background:rgba(255,0,0,.07);border:1.5px solid rgba(255,0,0,.2);border-radius:10px;padding:.7rem 1rem;font-size:.85rem;color:#c00;margin-bottom:1rem;display:none}
+.auth-error:not(:empty){display:block}
+.modal-auth{max-width:420px}
+
+/* SUBSCRIPTION CARD */
+.subscription-card{background:var(--white);border:2px solid rgba(232,97,10,.15);border-radius:20px;padding:2rem;box-shadow:0 6px 20px rgba(0,0,0,.08);margin-bottom:2rem}
+.sub-details-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1.5rem;margin-bottom:1.5rem}
+.sub-detail{text-align:center;background:var(--cream);padding:1rem;border-radius:12px}
+.sub-detail-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;color:#999;font-weight:700;margin-bottom:.4rem}
+.sub-detail-value{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--maroon-deep);font-weight:700}
+
+/* WEEKLY MENU GRID (CUSTOMER DASHBOARD) */
+.weekly-menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;margin-top:1rem}
+.menu-day-card .addon-section{margin-top:1rem;padding-top:1rem;border-top:1px solid #E8D5C0}
+.addon-checkbox{display:flex;align-items:center;gap:.5rem;padding:.4rem 0;font-size:.85rem;cursor:pointer;transition:color .2s}
+.addon-checkbox input{cursor:pointer;width:16px;height:16px;accent-color:var(--saffron)}
+.addon-checkbox:hover{color:var(--saffron)}
+
+/* ADMIN TIFFIN TABS */
+.tiffin-tab-btn{background:var(--white);color:var(--text-dark);border:2px solid #ddd;padding:.6rem 1.2rem;border-radius:50px;font-weight:700;cursor:pointer;transition:all .2s;font-size:.85rem;font-family:'Nunito',sans-serif}
+.tiffin-tab-btn:hover{border-color:var(--saffron);color:var(--saffron)}
+.tiffin-tab-btn.active{background:var(--saffron);color:white;border-color:var(--saffron)}
+.tiffin-tab-section{animation:fadeIn .3s ease}
+.menu-editor-day{background:var(--cream)!important}
+.addon-item{background:var(--cream)!important}
+.pricing-editor{background:var(--cream)!important}
+
+/* CUSTOMER DASHBOARD */
+.dash-dashboard{background:linear-gradient(135deg,var(--cream-dark),var(--cream));padding:5rem 2rem;min-height:100vh;margin-top:64px}
+.admin-container{max-width:1000px;margin:0 auto}
+
+/* RESPONSIVE TIFFIN */
+@media(max-width:768px){
+  .menu-week-grid{grid-template-columns:repeat(auto-fit,minmax(100px,1fr))}
+  .pricing-grid{grid-template-columns:1fr}
+  .pricing-card.pricing-popular{transform:none}
+  .pricing-card.pricing-popular:hover{transform:translateY(-4px)}
+  .features-grid{grid-template-columns:repeat(2,1fr)}
+  .faq-grid{grid-template-columns:1fr}
+  .weekly-menu-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+  .sub-details-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:640px){
+  .features-grid{grid-template-columns:1fr}
+  .tiffin-cta h2{font-size:1.5rem}
+  .menu-day-card{font-size:.75rem}
+}
