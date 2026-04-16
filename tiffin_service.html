@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="data:,">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Annapurna Tiffin Service – Daily Homemade Meals</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Tiro+Devanagari+Marathi&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<link rel="stylesheet" href="styles.css">
+<script src="js/config.js"></script>
+<script src="js/ui-utils.js"></script>
+<script src="js/tiffin-auth.js"></script>
+<script src="js/tiffin-service.js"></script>
+<script src="js/notify.js"></script>
+</head>
+
+<body>
+
+<!-- PAGE LOADING -->
+<div class="page-loading" id="pageLoading">
+  <div style="font-size:3rem">🍛</div>
+  <h2>Annapurna Tiffins</h2>
+  <div class="big-spinner"></div>
+  <p>Loading…</p>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><span>🍛</span> Annapurna</div>
+  <ul class="nav-links">
+    <li><a href="#menu">This Week's Menu</a></li>
+    <li><a href="#pricing">Subscription Plans</a></li>
+    <li><a href="#faq">FAQs</a></li>
+    <li><a href="annapurna_catering.html">Event Catering</a></li>
+  </ul>
+  <button class="nav-cta" id="navAuthBtn" onclick="showAuthModal()">Subscribe Now</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero" class="tiffin-hero">
+  <div class="rangoli-bg"></div>
+  <div class="hero-badge">🌸 Fresh • Healthy • Homemade</div>
+  <h1 class="hero-title">Your Daily Tiffin,<br><em>Delivered Fresh</em></h1>
+  <p class="hero-marathi">प्रतिदिन ताज़ा भोजन • घर तक पहुंचाया जाए</p>
+  <p class="hero-sub">Authentic Maharashtrian home-cooked meals delivered daily. No compromises, no additives — just pure, wholesome food.</p>
+  <div class="hero-actions">
+    <button class="btn-primary" onclick="smoothScroll('#pricing')">📦 See Plans & Pricing</button>
+    <button class="btn-secondary" onclick="smoothScroll('#menu')">🍲 View This Week's Menu</button>
+  </div>
+</section>
+
+<!-- THIS WEEK'S MENU -->
+<section id="menu" class="tiffin-menu-section">
+  <div class="section-header">
+    <div class="section-tag">📅 This Week's Menu</div>
+    <h2 class="section-title">What's <em>Cooking</em> This Week</h2>
+    <div class="divider"></div>
+    <p class="section-sub">Our chef decides the menu for the week. Each day features a complete curried meal with bread or rice.</p>
+  </div>
+  
+  <div class="menu-week-grid" id="menuWeekGrid">
+    <!-- Populated by tiffin-service.js: renderMenuPreview() -->
+  </div>
+  
+  <div class="menu-addon-note">
+    <strong>✨ Customize Each Day:</strong> Add Chapatis or Rice to any tiffin for ₹20–₹15 extra per order.
+  </div>
+</section>
+
+<!-- PRICING SECTION -->
+<section id="pricing" class="tiffin-pricing-section">
+  <div class="section-header">
+    <div class="section-tag">💳 Flexible Plans</div>
+    <h2 class="section-title">Choose Your <em>Plan</em></h2>
+    <div class="divider"></div>
+    <p class="section-sub">Pick what works best for you. Pause or cancel anytime.</p>
+  </div>
+  
+  <div class="pricing-grid" id="pricingGrid">
+    <!-- Populated by tiffin-service.js: renderPricingCards() -->
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="tiffin-features">
+  <div class="section-header">
+    <h2 class="section-title">Why <em>Annapurna</em> Tiffins?</h2>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">👨‍🍳</div>
+      <h4>Home-Cooked Love</h4>
+      <p>No industrial kitchens or mass production. Every tiffin is made with care in our kitchen, just like home food.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🥬</div>
+      <h4>Fresh Ingredients</h4>
+      <p>Local produce, no preservatives. We cook fresh each morning for afternoon delivery.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📅</div>
+      <h4>Flexible Subscriptions</h4>
+      <p>Daily, weekly, or monthly. Pause when traveling, cancel anytime. No lock-in contracts.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🚚</div>
+      <h4>Reliable Delivery</h4>
+      <p>Same time, every day. We understand you rely on this — punctuality guaranteed.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🫔</div>
+      <h4>Customizable</h4>
+      <p>Add chapatis or rice to any day, or ask for special modifications. We're flexible.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💬</div>
+      <h4>Direct Communication</h4>
+      <p>WhatsApp or call anytime. Need to skip tomorrow? Message us before 8 PM.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="tiffin-faq">
+  <div class="section-header">
+    <h2 class="section-title">Frequently Asked <em>Questions</em></h2>
+  </div>
+  <div class="faq-grid">
+    <div class="faq-card">
+      <h4>🕐 What time is delivery?</h4>
+      <p>Tiffins are delivered between 12:30 PM and 1:30 PM daily. Let us know your preferred time during signup.</p>
+    </div>
+    <div class="faq-card">
+      <h4>💰 How is payment handled?</h4>
+      <p>We'll send you an invoice at the end of each month. Pay via bank transfer or UPI. No hidden charges.</p>
+    </div>
+    <div class="faq-card">
+      <h4>⏸️ Can I pause my subscription?</h4>
+      <p>Yes! Pause for weeks or months anytime. For daily orders, message us before 8 PM the previous evening.</p>
+    </div>
+    <div class="faq-card">
+      <h4>🍛 What if I'm vegetarian?</h4>
+      <p>All menus are vegetarian. Non-veg variations available on request — let us know during signup.</p>
+    </div>
+    <div class="faq-card">
+      <h4>🚫 What about weekends & holidays?</h4>
+      <p>We observe major holidays. Notify us in advance if you need special arrangements.</p>
+    </div>
+    <div class="faq-card">
+      <h4>❓ How do I manage add-ons?</h4>
+      <p>After signing up, you'll have a dashboard. Choose chapatis or rice for each day from there.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="tiffin-cta">
+  <div class="cta-content">
+    <h2>Ready for Delicious Home-Cooked Meals?</h2>
+    <p>Join hands of happy subscribers getting fresh food daily.</p>
+    <button class="btn-primary btn-large" onclick="showAuthModal()">🍛 Subscribe & Start Today</button>
+  </div>
+</section>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authModal" style="display:none;">
+  <div class="modal-box modal-auth">
+    <div class="modal-head">
+      <h3 id="authModalTitle">Create Your Account</h3>
+      <button class="modal-close" onclick="closeModal('authModal')">✕</button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="auth-tab-buttons">
+        <button class="auth-tab-btn active" id="signupTabBtn" onclick="switchAuthTab('signup')">New Customer</button>
+        <button class="auth-tab-btn" id="loginTabBtn" onclick="switchAuthTab('login')">Already Subscribed?</button>
+      </div>
+      
+      <!-- SIGNUP TAB -->
+      <div id="signupTab" class="auth-tab active">
+        <div class="auth-error" id="signupErr"></div>
+        <div class="input-group">
+          <label>Full Name</label>
+          <input type="text" id="signupName" placeholder="Your name" />
+        </div>
+        <div class="input-group">
+          <label>Email</label>
+          <input type="email" id="signupEmail" placeholder="your@email.com" />
+        </div>
+        <div class="input-group">
+          <label>Phone</label>
+          <input type="tel" id="signupPhone" placeholder="9876543210" />
+        </div>
+        <div class="input-group">
+          <label>Delivery Address</label>
+          <textarea id="signupAddress" placeholder="House no, street, area, landmark..." rows="3"></textarea>
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="signupPass" placeholder="Min 6 characters" />
+        </div>
+        <button class="btn-primary" style="width:100%;margin-top:1rem;" id="signupBtn" onclick="tiffinSignup()">
+          <span id="signupBtnText">Create Account →</span>
+        </button>
+      </div>
+      
+      <!-- LOGIN TAB -->
+      <div id="loginTab" class="auth-tab" style="display:none;">
+        <div class="auth-error" id="loginErr"></div>
+        <div class="input-group">
+          <label>Email</label>
+          <input type="email" id="loginEmail" placeholder="your@email.com" onkeydown="if(event.key==='Enter')tiffinLogin()"/>
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="loginPass" placeholder="Your password" onkeydown="if(event.key==='Enter')tiffinLogin()"/>
+        </div>
+        <button class="btn-primary" style="width:100%;margin-top:1rem;" id="loginBtn" onclick="tiffinLogin()">
+          <span id="loginBtnText">Login →</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer style="text-align:center;padding:2rem;background:var(--maroon-deep);color:var(--cream);font-size:.85rem;">
+  <p>🍛 Annapurna Catering & Tiffin Service | Authentic Maharashtrian Flavours</p>
+  <p style="margin-top:.5rem;font-size:.75rem;color:#aaa;">
+    <a href="annapurna_catering.html" style="color:var(--turmeric);text-decoration:none;">Event Catering</a> • 
+    <a href="#" onclick="javascript:alert('📞 +91-XXXX-XXXX')" style="color:var(--turmeric);text-decoration:none;">Call Us</a> • 
+    <span>📧 hello@annapurna.in</span>
+  </p>
+</footer>
+
+</body>
+</html>

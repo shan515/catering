@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="data:,">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Tiffin Subscription – Annapurna</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Tiro+Devanagari+Marathi&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<link rel="stylesheet" href="styles.css">
+<script src="js/config.js"></script>
+<script src="js/ui-utils.js"></script>
+<script src="js/tiffin-auth.js"></script>
+<script src="js/tiffin-service.js"></script>
+<script src="js/tiffin-dashboard.js"></script>
+<script src="js/notify.js"></script>
+</head>
+
+<body>
+
+<!-- PAGE LOADING -->
+<div class="page-loading" id="pageLoading">
+  <div style="font-size:3rem">🍛</div>
+  <h2>Annapurna Tiffins</h2>
+  <div class="big-spinner"></div>
+  <p>Loading…</p>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><span>🍛</span> Annapurna Tiffins</div>
+  <ul class="nav-links">
+    <li><a href="#subscription">My Subscription</a></li>
+    <li><a href="#menu">This Week</a></li>
+    <li><a href="#history">Delivery History</a></li>
+    <li><a href="#account">Account</a></li>
+  </ul>
+  <button class="nav-cta" onclick="tiffinLogout()">Logout</button>
+</nav>
+
+<section class="dash-dashboard" id="customerDash">
+  <div class="admin-container">
+    
+    <!-- SUBSCRIPTION STATUS CARD -->
+    <div class="subscription-card" id="subscriptionCard">
+      <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:1.5rem;">
+        <div>
+          <h2 style="font-family:'Playfair Display',serif;color:var(--maroon-deep);margin:0;">My Subscription</h2>
+          <p id="subStatus" style="color:#666;font-size:.9rem;margin:.3rem 0 0 0;">Status: <strong id="statusBadge">Active</strong></p>
+        </div>
+        <div style="text-align:right;">
+          <div id="nextDelivDate" style="font-size:.85rem;color:#999;">Next Delivery: TBD</div>
+        </div>
+      </div>
+      
+      <div class="sub-details-grid">
+        <div class="sub-detail">
+          <div class="sub-detail-label">Plan Type</div>
+          <div class="sub-detail-value" id="subType">—</div>
+        </div>
+        <div class="sub-detail">
+          <div class="sub-detail-label">Price Per Day</div>
+          <div class="sub-detail-value" id="subPricePerDay">₹—</div>
+        </div>
+        <div class="sub-detail">
+          <div class="sub-detail-label">Total Cost</div>
+          <div class="sub-detail-value" id="subTotalCost">₹—</div>
+        </div>
+        <div class="sub-detail">
+          <div class="sub-detail-label">Started On</div>
+          <div class="sub-detail-value" id="subStartDate">—</div>
+        </div>
+      </div>
+      
+      <div style="margin-top:1.5rem;display:flex;gap:.8rem;flex-wrap:wrap;">
+        <button class="btn-secondary" onclick="openModal('pauseModal')">⏸️ Pause</button>
+        <button class="btn-secondary" onclick="openModal('cancelModal')">❌ Cancel</button>
+        <button class="btn-secondary" onclick="openModal('extendModal')">➕ Extend</button>
+      </div>
+    </div>
+    
+    <!-- THIS WEEK'S MENU WITH ADD-ONS -->
+    <div id="thisWeekSection">
+      <div style="margin-top:2rem;margin-bottom:1.5rem;">
+        <h3 style="font-family:'Playfair Display',serif;color:var(--maroon-deep);">📅 This Week's Menu & Add-ons</h3>
+        <p style="color:#666;font-size:.85rem;">Customize each day with chapatis or rice. Click to add/remove.</p>
+      </div>
+      
+      <div class="weekly-menu-grid" id="weeklyMenuGrid">
+        <!-- Populated by tiffin-dashboard.js: renderWeeklyMenu() -->
+      </div>
+    </div>
+    
+    <!-- ACCOUNT SETTINGS -->
+    <div id="accountSection" style="margin-top:2rem;display:none;">
+      <h3 style="font-family:'Playfair Display',serif;color:var(--maroon-deep);">⚙️ Account Settings</h3>
+      
+      <div class="account-form" style="background:var(--cream);padding:1.5rem;border-radius:8px;margin-top:1rem;">
+        <div class="input-group">
+          <label>Full Name</label>
+          <input type="text" id="accName" />
+        </div>
+        <div class="input-group">
+          <label>Phone</label>
+          <input type="tel" id="accPhone" />
+        </div>
+        <div class="input-group">
+          <label>Delivery Address</label>
+          <textarea id="accAddress" rows="3"></textarea>
+        </div>
+        <div class="input-group">
+          <label>Delivery Instructions (e.g., leave at gate, knock twice)</label>
+          <textarea id="accInstructions" placeholder="Any special instructions..." rows="2"></textarea>
+        </div>
+        <button class="btn-primary" onclick="updateAccountSettings()" style="margin-top:1rem;">💾 Save Changes</button>
+      </div>
+    </div>
+    
+    <!-- DELIVERY HISTORY -->
+    <div id="historySection" style="margin-top:2rem;display:none;">
+      <h3 style="font-family:'Playfair Display',serif;color:var(--maroon-deep);">📦 Delivery History</h3>
+      <div class="orders-table" id="ordersTable">
+        <!-- Populated by tiffin-dashboard.js: renderOrderHistory() -->
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+<!-- PAUSE MODAL -->
+<div class="modal-overlay" id="pauseModal" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>⏸️ Pause Subscription</h3>
+      <button class="modal-close" onclick="closeModal('pauseModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>Your subscription will be paused. You won't receive deliveries until you resume it.</p>
+      <div class="input-group" style="margin-top:1rem;">
+        <label>Pause for how long?</label>
+        <select id="pauseDuration">
+          <option value="1">1 week</option>
+          <option value="2">2 weeks</option>
+          <option value="4">1 month</option>
+          <option value="0">Until I resume manually</option>
+        </select>
+      </div>
+      <button class="btn-primary" style="width:100%;margin-top:1.5rem;" onclick="pauseSubscription()">Confirm Pause</button>
+    </div>
+  </div>
+</div>
+
+<!-- CANCEL MODAL -->
+<div class="modal-overlay" id="cancelModal" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>❌ Cancel Subscription</h3>
+      <button class="modal-close" onclick="closeModal('cancelModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="color:#d32f2f;font-weight:700;">⚠️ This will cancel your subscription completely.</p>
+      <p>We'll miss you! Let us know why you're leaving (optional):</p>
+      <textarea id="cancelReason" placeholder="Your feedback helps us improve..." style="width:100%;padding:.5rem;border:1px solid #ddd;border-radius:4px;margin-top:.5rem;font-family:inherit;" rows="3"></textarea>
+      <div style="margin-top:1rem;display:flex;gap:.5rem;">
+        <button class="btn-secondary" style="flex:1;" onclick="closeModal('cancelModal')">Not Now</button>
+        <button class="btn-danger" style="flex:1;background:#d32f2f;color:white;border:none;cursor:pointer;border-radius:4px;padding:.6rem;" onclick="cancelSubscription()">Yes, Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EXTEND MODAL -->
+<div class="modal-overlay" id="extendModal" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>➕ Extend Subscription</h3>
+      <button class="modal-close" onclick="closeModal('extendModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>Extend your subscription for more months at current pricing.</p>
+      <div class="input-group" style="margin-top:1rem;">
+        <label>Extend for:</label>
+        <select id="extendMonths">
+          <option value="1">1 month</option>
+          <option value="3">3 months</option>
+          <option value="6">6 months</option>
+          <option value="12">1 year</option>
+        </select>
+      </div>
+      <div id="extendCostPreview" style="background:var(--cream);padding:1rem;border-radius:4px;margin-top:1rem;font-weight:700;">
+        Est. Cost: ₹—
+      </div>
+      <button class="btn-primary" style="width:100%;margin-top:1rem;" onclick="extendSubscription()">Extend & Receive Invoice</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

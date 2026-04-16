@@ -13,6 +13,7 @@
 <script src="js/ui-utils.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/dashboard.js"></script>
+<script src="js/admin-tiffin.js"></script>
 <script src="js/notify.js"></script>
 <style>
   body { background: var(--cream); }
@@ -77,9 +78,24 @@
           <button onclick="ownerLogout()" style="padding:.5rem 1rem;border-radius:50px;border:2px solid var(--maroon);background:transparent;color:var(--maroon);font-weight:700;cursor:pointer;font-size:.85rem;font-family:'Nunito',sans-serif;">Logout</button>
         </div>
       </div>
-      <div class="dash-stats" id="dashStats"></div>
-      <div id="requestsList"></div>
-      <div id="callbacksList"></div>
+      
+      <!-- TAB BUTTONS FOR CATERING & TIFFIN -->
+      <div style="display:flex;gap:.8rem;margin-bottom:2rem;flex-wrap:wrap;">
+        <button id="tab-catering" class="filter-btn" onclick="switchAdminTab('catering')" style="padding:.6rem 1rem;border-radius:50px;background:var(--saffron);color:white;border:2px solid var(--saffron);font-weight:700;cursor:pointer;font-size:.85rem;font-family:'Nunito',sans-serif;">📋 Event Catering</button>
+        <button id="tab-tiffin" class="filter-btn" onclick="switchAdminTab('tiffin')" style="padding:.6rem 1rem;border-radius:50px;background:white;color:var(--text-dark);border:2px solid #ddd;font-weight:700;cursor:pointer;font-size:.85rem;font-family:'Nunito',sans-serif;">🍛 Tiffin Service</button>
+      </div>
+      
+      <!-- CATERING TAB -->
+      <div id="catering-tab">
+        <div class="dash-stats" id="dashStats"></div>
+        <div id="requestsList"></div>
+        <div id="callbacksList"></div>
+      </div>
+      
+      <!-- TIFFIN TAB -->
+      <div id="tiffin-tab" style="display:none;">
+        <div id="tiffinAdminPanel"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -115,6 +131,37 @@
     </div>
   </div>
 </div>
+
+<script>
+// Switch between catering and tiffin tabs
+function switchAdminTab(tab) {
+  const cateringTab = document.getElementById('catering-tab');
+  const tiffinTab = document.getElementById('tiffin-tab');
+  const cateringBtn = document.getElementById('tab-catering');
+  const tiffinBtn = document.getElementById('tab-tiffin');
+  
+  if (tab === 'catering') {
+    cateringTab.style.display = 'block';
+    tiffinTab.style.display = 'none';
+    cateringBtn.style.background = 'var(--saffron)';
+    cateringBtn.style.color = 'white';
+    cateringBtn.style.border = '2px solid var(--saffron)';
+    tiffinBtn.style.background = 'white';
+    tiffinBtn.style.color = 'var(--text-dark)';
+    tiffinBtn.style.border = '2px solid #ddd';
+  } else {
+    cateringTab.style.display = 'none';
+    tiffinTab.style.display = 'block';
+    cateringBtn.style.background = 'white';
+    cateringBtn.style.color = 'var(--text-dark)';
+    cateringBtn.style.border = '2px solid #ddd';
+    tiffinBtn.style.background = 'var(--saffron)';
+    tiffinBtn.style.color = 'white';
+    tiffinBtn.style.border = '2px solid var(--saffron)';
+    initAdminTiffinPanel();
+  }
+}
+</script>
 
 </body>
 </html>
